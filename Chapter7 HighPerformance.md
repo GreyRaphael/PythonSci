@@ -39,6 +39,7 @@ C:\ProgramData\Anaconda3\Scripts\jupyter notebook password
 ```python
 # jupyter_notebook_config.py
 c.NotebookApp.ip = '222.29.69.149' 
+# 阿里云需要填写 私有ip
 # 将jupyter_notebook_config.json里面的密码复制到这
 c.NotebookApp.password = "sha1:9ba3e4304a4a:d322d173f6f43a74e3445c75aa02c218f2759a1c"
 c.NotebookApp.open_browser = False
@@ -46,6 +47,16 @@ c.NotebookApp.open_browser = False
 
 > Jupyter notebook, JupyterLab是基于浏览器的服务;  
 > 在浏览器输入`222.29.69.149:8888`配合密码就可以访问
+
+Linux后台运行: 不采用service
+
+```bash
+# being jupyter
+nohup jupyter-notebook ~/JupyterWork/ &
+# terminate jupyter
+lsof nohup.out
+kill -9 <PID>
+```
 
 ## IPython
 
