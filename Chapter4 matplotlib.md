@@ -1,17 +1,17 @@
 # matplotlib
 
 - [matplotlib](#matplotlib)
-    - [Some Examples](#some-examples)
-    - [Format Strings](#format-strings)
-    - [set and get object properties](#set-and-get-object-properties)
-    - [subplot](#subplot)
-    - [matplot config](#matplot-config)
-    - [Artist Object](#artist-object)
-        - [Artist property](#artist-property)
-    - [Figure](#figure)
-    - [Axes](#axes)
-    - [Axis](#axis)
-    - [Example](#example)
+  - [Some Examples](#some-examples)
+  - [Format Strings](#format-strings)
+  - [set and get object properties](#set-and-get-object-properties)
+  - [subplot](#subplot)
+  - [matplot config](#matplot-config)
+  - [Artist Object](#artist-object)
+    - [Artist property](#artist-property)
+  - [Figure](#figure)
+  - [Axes](#axes)
+  - [Axis](#axis)
+  - [Example](#example)
 
 ![](res/intro01.png)
 
@@ -227,6 +227,27 @@ line = matplotlib.lines.Line2D(x, x**2)
 axs.add_line(line)
 axs.axis([0, 3, 0, 3])
 plt.show()
+```
+
+![](matplot_res/Figure_7.png)
+
+```python
+import numpy as np
+import matplotlib.pyplot as plt
+from matplotlib.path import 
+
+width, height=2000, 2000
+
+polygon=[(0.1*width, 0.1*height), (0.15*width, 0.7*height), (0.8*width, 0.75*height), (0.72*width, 0.15*height)]
+poly_path=Path(polygon)
+
+x, y = np.mgrid[:height, :width]
+coors=np.hstack((x.reshape(-1, 1), y.reshape(-1,1))) # coors.shape is (4000000,2)
+
+mask = poly_path.contains_points(coors)
+
+plt.imshow(mask.reshape(height, width))
+plt.savefig('Figure_7.png', bbox_inches = 'tight')
 ```
 
 ## Format Strings
