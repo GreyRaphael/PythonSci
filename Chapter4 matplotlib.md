@@ -1382,6 +1382,96 @@ plt.show()
 example: simple harmonic motion with oscillation driven force
 > $m\frac{d^2x}{dt^2}+kx=F_0\cos(\omega t)$, 通解+特解  
 > $\omega_0=\sqrt{\frac{k}{m}}$  
-> if $\omega\ne\omega_0$, $x=A\cos(\omega_0t)+B\sin(\omega_0t)+\frac{F_0/m}{\omega_0^2-\omega^2}\cos(\omega t)$
+> if $\omega\ne\omega_0$, $x=A\cos(\omega_0t)+B\sin(\omega_0t)+\frac{F_0/m}{\omega_0^2-\omega^2}\cos(\omega t)$;  
+> if $\omega=\omega_0$, $x=tD\sin(\omega t), D=\frac{F_0}{2m\omega}$
 
 ```py
+import numpy as np
+import matplotlib.pyplot as plt
+
+fig = plt.figure()
+ax = fig.add_subplot(1, 1, 1)
+
+dt = 0.02
+k = 4
+m = 1
+F0=10
+Omega=3
+N = 500
+
+
+def osc_pos():
+    t = 0
+    x = 3
+    v = 0
+
+    t_list = [t]
+    x_list = [x]
+    for _ in range(N-1):
+        a = -k*x/m+F0*np.cos(Omega*t)
+        v += a*dt
+        x += v*dt
+        t += dt
+        x_list.append(x)
+        t_list.append(t)
+    return t_list, x_list
+
+
+# analytical result
+t = np.arange(N)*dt
+Omega0 = np.sqrt(k/m)
+y_analytical = 5*np.cos(Omega0*t)+10/(Omega0**2-Omega**2)*np.cos(Omega*t)
+
+# simulation result
+t_list, x_list = osc_pos()
+
+plt.plot(t, y_analytical, 'b.', t_list, x_list, 'r.')
+plt.show()
+```
+
+example: 演示接近共振的情况
+> ![](matplot_res/osc01.png)  
+> 该图是两个三角函数相乘，来自解析解中两个cos和差化积  
+
+```py
+import numpy as np
+import matplotlib.pyplot as plt
+
+fig = plt.figure()
+ax = fig.add_subplot(1, 1, 1)
+
+dt = 0.02
+k = 4
+m = 1
+F0=10
+Omega=2.1
+N = 3000
+
+
+def osc_pos():
+    t = 0
+    x = 3
+    v = 0
+
+    t_list = [t]
+    x_list = [x]
+    for _ in range(N-1):
+        a = -k*x/m+F0*np.cos(Omega*t)
+        v += a*dt
+        x += v*dt
+        t += dt
+        x_list.append(x)
+        t_list.append(t)
+    return t_list, x_list
+
+
+# simulation result
+t_list, x_list = osc_pos()
+
+plt.plot(t_list, x_list, 'r.')
+plt.show()
+```
+
+example: 共振
+> let $\omega=\omega_0$
+> ![](matplot_res/osc02.png)
