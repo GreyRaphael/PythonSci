@@ -1199,3 +1199,36 @@ ani.save('move01.gif', dpi=80)
 plt.show()
 ```
 
+example: 抛体运动
+
+```py
+import matplotlib.pyplot as plt
+from matplotlib.animation import FuncAnimation
+
+fig = plt.figure()
+ax = fig.add_subplot(1, 1, 1)
+
+coor = [0, 4.9]
+velocity = [10, 0]
+a=[0, -9.8]
+dt = 0.02
+
+
+def func(frame):
+    # ax.clear()
+    plt.xlim(0, 10)
+    plt.ylim(0, 10)
+    ax.plot(coor[0], coor[1], 'ro')
+
+    coor[0] += velocity[0]*dt
+    coor[1] += velocity[1]*dt
+    
+    velocity[0] += a[0]*dt
+    velocity[1] += a[1]*dt
+    
+    # print(coor)
+
+ani = FuncAnimation(fig, func, frames=50, interval=200, repeat=True)
+ani.save('move02.gif', dpi=80)
+plt.show()
+```
