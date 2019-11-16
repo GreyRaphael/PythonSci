@@ -1327,3 +1327,47 @@ ani = FuncAnimation(fig, func, frames=300, interval=100, repeat=True)
 ani.save('move04.gif', dpi=80)
 # plt.show()
 ```
+
+example: simple harmonic motion
+
+```py
+import numpy as np
+import matplotlib.pyplot as plt
+
+fig = plt.figure()
+ax = fig.add_subplot(1, 1, 1)
+
+dt = 0.02
+k = 4
+m = 1
+N = 300
+
+
+def osc_pos():
+    t = 0
+    x = 3
+    v = 0
+
+    t_list = [t]
+    x_list = [x]
+    for _ in range(N-1):
+        a = -k*x/m
+        v += a*dt
+        x += v*dt
+        t += dt
+        x_list.append(x)
+        t_list.append(t)
+    return t_list, x_list
+
+
+# analytical result
+t = np.arange(N)*dt
+Omega = np.sqrt(k/m)
+y_analytical = 3*np.cos(Omega*t)
+
+# simulation result
+t_list, x_list = osc_pos()
+
+plt.plot(t, y_analytical, 'b.', t_list, x_list, 'r.')
+plt.show()
+```
