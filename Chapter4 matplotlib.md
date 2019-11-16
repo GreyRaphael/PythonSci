@@ -1180,7 +1180,7 @@ velocity = [2, 2]
 dt = 0.02
 
 
-def func(frame, coor, velocity, dt):
+def func(frame):
     ax.clear()
     plt.xlim(0, 10)
     plt.ylim(0, 10)
@@ -1194,7 +1194,7 @@ def func(frame, coor, velocity, dt):
     ax.plot(coor[0], coor[1], 'ro')
 
 
-ani = FuncAnimation(fig, func, fargs=(coor, velocity, dt), frames=30, interval=200, repeat=True)
+ani = FuncAnimation(fig, func, frames=30, interval=200, repeat=True)
 ani.save('move01.gif', dpi=80)
 plt.show()
 ```
