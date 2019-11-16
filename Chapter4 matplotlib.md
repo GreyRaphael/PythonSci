@@ -1166,6 +1166,7 @@ plt.show()
 ```
 
 example: 匀速直线运动(Uniform Motion)
+> $dx=v*dt$  
 > ![](matplot_res/move01.gif)
 
 ```py
@@ -1200,6 +1201,7 @@ plt.show()
 ```
 
 example: 抛体运动
+> $d\vec{v}=\vec{a}*dt, d\vec{x}=\vec{v}*dt$  
 > ![](matplot_res/move02.gif)
 
 ```py
@@ -1272,6 +1274,7 @@ plt.show()
 ```
 
 example: 带有空气阻力的运动
+> $\vec{a}=\vec{g}-kv^2\hat{v}=\vec{g}-k|v|\vec{v}, d\vec{v}=\vec{a}*dt, d\vec{x}=\vec{v}dt$  
 > ![](matplot_res/move04.gif)
 
 ```py
@@ -1329,6 +1332,10 @@ ani.save('move04.gif', dpi=80)
 ```
 
 example: simple harmonic motion
+> $m\frac{d^2x}{dt^2}+kx=0$  
+> $a=\frac{F}{m}=\frac{-k}{m}x$  
+> $v=a*dt$  
+> $x=v*dt$
 
 ```py
 import numpy as np
@@ -1371,3 +1378,10 @@ t_list, x_list = osc_pos()
 plt.plot(t, y_analytical, 'b.', t_list, x_list, 'r.')
 plt.show()
 ```
+
+example: simple harmonic motion with oscillation driven force
+> $m\frac{d^2x}{dt^2}+kx=F_0\cos(\omega t)$, 通解+特解  
+> $\omega_0=\sqrt{\frac{k}{m}}$  
+> if $\omega\ne\omega_0$, $x=A\cos(\omega_0t)+B\sin(\omega_0t)+\frac{F_0/m}{\omega_0^2-\omega^2}\cos(\omega t)$
+
+```py
