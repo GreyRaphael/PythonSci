@@ -1200,6 +1200,7 @@ plt.show()
 ```
 
 example: 抛体运动
+> ![](matplot_res/move02.gif)
 
 ```py
 import matplotlib.pyplot as plt
