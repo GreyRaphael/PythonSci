@@ -1164,3 +1164,38 @@ ani = FuncAnimation(fig, func, fargs=(x, y), frames=30, interval=200, repeat=Tru
 ani.save('animation.gif', dpi=80)
 plt.show()
 ```
+
+example: 匀速直线运动(Uniform Motion)
+> ![](matplot_res/move01.gif)
+
+```py
+import matplotlib.pyplot as plt
+from matplotlib.animation import FuncAnimation
+
+fig = plt.figure()
+ax = fig.add_subplot(1, 1, 1)
+
+coor = [1, 1]
+velocity = [2, 2]
+dt = 0.02
+
+
+def func(frame, coor, velocity, dt):
+    ax.clear()
+    plt.xlim(0, 10)
+    plt.ylim(0, 10)
+
+    dx=velocity[0]*dt
+    dy=velocity[1]*dt
+
+    coor[0] += dx
+    coor[1] += dy
+
+    ax.plot(coor[0], coor[1], 'ro')
+
+
+ani = FuncAnimation(fig, func, fargs=(coor, velocity, dt), frames=30, interval=200, repeat=True)
+ani.save('move01.gif', dpi=80)
+plt.show()
+```
+
