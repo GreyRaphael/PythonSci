@@ -1270,3 +1270,60 @@ ani = FuncAnimation(fig, func, frames=100, interval=100, repeat=True)
 ani.save('move02.gif', dpi=80)
 plt.show()
 ```
+
+example: 带有空气阻力的运动
+> ![](matplot_res/move04.gif)
+
+```py
+import numpy as np
+import matplotlib.pyplot as plt
+from matplotlib.animation import FuncAnimation
+
+fig = plt.figure()
+ax = fig.add_subplot(1, 1, 1)
+
+dt = 0.02
+
+# without air drag
+coor = np.array([0, 4.9])
+v = np.array([3, 3])
+g = np.array([0, -9.8])
+
+# with air drag
+coor_air = coor.copy()
+v_air = v.copy()
+a_air = g.copy()
+
+# 空气阻力造成的加速度(带方向): -kv^2
+k = 0.1
+
+
+def func(frame):
+    global coor, v, g, coor_air, v_air, a_air
+
+    # ax.clear()
+    plt.xlim(0, 10)
+    plt.ylim(0, 10)
+    ax.plot(coor[0], coor[1], 'b.')
+    ax.plot(coor_air[0], coor_air[1], 'r.')
+
+    coor = coor+v*dt
+    coor_air = coor_air+v_air*dt
+
+    v = v+g*dt
+    v_air = v_air+a_air*dt
+
+    # 模 x 矢量 得到 v^2
+    a_air = g-k*np.linalg.norm(v_air)*v_air
+
+    if coor[1] <= 0:
+        v[1] = abs(v[1])
+
+    if coor_air[1] <= 0:
+        v_air[1] = abs(v_air[1])
+
+
+ani = FuncAnimation(fig, func, frames=300, interval=100, repeat=True)
+ani.save('move04.gif', dpi=80)
+# plt.show()
+```
