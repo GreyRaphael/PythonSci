@@ -12,6 +12,7 @@
   - [Axes](#axes)
   - [Axis](#axis)
   - [Example](#example)
+  - [Animation](#animation)
 
 ![](res/intro01.png)
 
@@ -1136,3 +1137,30 @@ plt.show()
 ```
 
 此外还有很多预定义的Locator和Formatter类，详细内容请参考相应的API文档。
+
+## Animation
+
+![](matplot_res/animation.gif)
+
+```py
+import matplotlib.pyplot as plt
+from matplotlib.animation import FuncAnimation
+
+fig = plt.figure()
+ax = fig.add_subplot(1, 1, 1)
+
+
+def func(frame, x, y):
+    ax.clear()
+    plt.xlim(0, 10)
+    plt.ylim(0, 10)
+    ax.plot(x[frame % 10], y[frame % 10], 'ro')
+
+
+x = [i for i in range(10)]
+y = x
+
+ani = FuncAnimation(fig, func, fargs=(x, y), frames=30, interval=200, repeat=True)
+ani.save('animation.gif', dpi=80)
+plt.show()
+```
