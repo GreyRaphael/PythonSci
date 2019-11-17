@@ -1535,3 +1535,70 @@ pe_array = np.array(pe_list)
 plt.plot(t_list, ke_array+pe_array, 'r', dashes=[3, 2])
 plt.show()
 ```
+
+example: 2d string without friction and driven force
+> if $m\frac{v^2}{r}=kr\rightarrow r=v\sqrt{\frac{m}{k}}$, 弹力提供向心力是圆周运动
+
+![](matplot_res/2d_osc01.png)
+
+```py
+import numpy as np
+import matplotlib.pyplot as plt
+
+fig = plt.figure()
+
+dt = 0.01
+k = 4
+m = 1
+c = 0
+F0 = 0
+Omega = 2
+N = 500
+
+start_pos = np.array([3.0, 0.0])
+start_v = np.array([0.0, 3.0*np.sqrt(k/m)])
+
+
+def osc_pos():
+    t = 0
+    pos = start_pos.copy()
+    v = start_v.copy()
+
+    t_list = []
+    pos_list = []
+    KE_list = []  # kinetic energy
+    PE_list = []  # potential energy
+    for _ in range(N):
+        t_list.append(t)
+        pos_list.append(pos.copy())
+        KE_list.append(0.5*m*v**2)
+        PE_list.append(0.5*k*pos**2)
+
+        a = -k*pos/m+np.array([F0*np.cos(Omega*t)/m, 0])-c*v
+        v += a*dt
+        pos += v*dt
+        t += dt
+
+    pos_array = np.stack(pos_list, axis=0)
+    ke_array = np.stack(KE_list, axis=0)
+    pe_array = np.stack(PE_list, axis=0)
+    return t_list, pos_array, ke_array, pe_array
+
+
+# simulation result
+t_list, pos_array, ke_array, pe_array = osc_pos()
+
+ax1 = plt.subplot(3, 1, 1)
+ax1.set_aspect('equal')
+# x, y
+plt.plot(pos_array[:, 0], pos_array[:, 1], 'r')
+plt.arrow(start_pos[0], start_pos[1], start_v[0]*0.2, start_v[1]*0.2,head_width=0.2)
+plt.grid()
+
+plt.subplot(3, 1, 2)
+plt.plot(t_list, ke_array[:,0], 'g', t_list, ke_array[:,1], 'b', t_list, ke_array[:,0]+ke_array[:,1], 'r')
+plt.subplot(3, 1, 3)
+plt.plot(t_list, pe_array[:,0], 'g', t_list, pe_array[:,1], 'b', t_list, pe_array[:,0]+pe_array[:,1], 'r')
+
+plt.show()
+```
