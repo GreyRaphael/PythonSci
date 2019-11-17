@@ -1737,7 +1737,7 @@ v10 = np.zeros(2)
 m2 = 5.972E24  # earth
 x20 = np.array([1.496E11, 0.0])
 v20 = np.array([0.0, 2.978E4])
-dt = 24*3600 # 1d
+dt = 24*3600  # 1d
 
 
 def oribit():
@@ -1762,6 +1762,7 @@ def oribit():
 
         x1 += v1*dt
         x2 += v2*dt
+        t = t+dt
 
     pos_array1 = np.stack(pos_list1, axis=0)
     pos_array2 = np.stack(pos_list2, axis=0)
@@ -1773,5 +1774,88 @@ ax = plt.subplot(1, 1, 1)
 ax.set_aspect('equal')
 plt.plot(pos_array1[:, 0], pos_array1[:, 1], 'ro',
          pos_array2[:, 0], pos_array2[:, 1], 'b')
+plt.show()
+```
+
+example: 3 body gravity
+> ![](matplot_res/3body_oribit01.png)  
+> ![](matplot_res/3body_oribit02.png)
+
+
+```py
+import numpy as np
+import matplotlib.pyplot as plt
+
+G = 6.673E-11
+
+
+def Gravity(x1, x2, m1, m2):
+    r = np.linalg.norm(x1-x2)
+    return G*m1*m2*(x2-x1)/r**3
+
+
+m1 = 1.989E30  # sun
+r0 = 1.496E11
+v0 = np.sqrt(G*m1/np.sqrt(3)/r0)
+
+x10 = np.array([r0, 0])
+v10 = np.array([0, v0])
+m2 = m1
+x20 = np.array([r0*np.cos(np.pi*2/3), r0*np.sin(np.pi*2/3)])
+v20 = np.array([v0*np.cos(np.pi*2/3+np.pi*0.5),
+                v0*np.sin(np.pi*2/3+np.pi*0.5)])
+m3 = m1
+x30 = np.array([r0*np.cos(np.pi*4/3), r0*np.sin(np.pi*4/3)])
+v30 = np.array([v0*np.cos(np.pi*4/3+np.pi*0.5),
+                v0*np.sin(np.pi*4/3+np.pi*0.5)])
+dt = 24*3600  # 1d
+
+
+def oribit():
+    x1 = x10.copy()
+    v1 = v10.copy()
+    x2 = x20.copy()
+    v2 = v20.copy()
+    x3 = x30.copy()
+    v3 = v30.copy()
+    t = 0
+
+    pos_list1 = []
+    pos_list2 = []
+    pos_list3 = []
+    for _ in range(120):
+        pos_list1.append(x1.copy())
+        pos_list2.append(x2.copy())
+        pos_list3.append(x3.copy())
+
+        F21 = Gravity(x1, x2, m1, m2)
+        F23 = Gravity(x3, x2, m3, m2)
+        F31 = Gravity(x1, x3, m1, m3)
+        a1 = (F21+F31)/m1
+        a2 = (-F21-F23)/m2
+        a3 = (F23-F31)/m3
+
+        v1 += a1*dt
+        v2 += a2*dt
+        v3 += a3*dt
+
+        x1 += v1*dt
+        x2 += v2*dt
+        x3 += v3*dt
+
+        t += dt
+
+    pos_array1 = np.stack(pos_list1, axis=0)
+    pos_array2 = np.stack(pos_list2, axis=0)
+    pos_array3 = np.stack(pos_list3, axis=0)
+    return pos_array1, pos_array2, pos_array3
+
+
+pos_array1, pos_array2, pos_array3 = oribit()
+ax = plt.subplot(1, 1, 1)
+ax.set_aspect('equal')
+plt.plot(pos_array1[:, 0], pos_array1[:, 1], 'r',
+         pos_array2[:, 0], pos_array2[:, 1], 'g',
+         pos_array3[:, 0], pos_array3[:, 1], 'b')
 plt.show()
 ```
