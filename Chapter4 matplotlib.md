@@ -1537,9 +1537,12 @@ plt.show()
 ```
 
 example: 2d string without friction and driven force
-> if $m\frac{v^2}{r}=kr\rightarrow r=v\sqrt{\frac{m}{k}}$, 弹力提供向心力是圆周运动
+> if $m\frac{v^2}{r}=kr\rightarrow r=v\sqrt{\frac{m}{k}}$, 弹力提供向心力是圆周运动  
+> 通过调节F0, c可以得到各种模拟结果
 
 ![](matplot_res/2d_osc01.png)
+
+![](matplot_res/2d_osc02.png)
 
 ```py
 import numpy as np
@@ -1552,7 +1555,7 @@ k = 4
 m = 1
 c = 0
 F0 = 0
-Omega = 2
+Omega = 4
 N = 500
 
 start_pos = np.array([3.0, 0.0])
