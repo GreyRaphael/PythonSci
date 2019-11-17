@@ -1605,3 +1605,112 @@ plt.plot(t_list, pe_array[:,0], 'g', t_list, pe_array[:,1], 'b', t_list, pe_arra
 
 plt.show()
 ```
+
+example: two free ball connected by string with and without friction
+> $\vec{F}=-k(|\vec{x_1}-\vec{x_2}|-l_0)\frac{\vec{x_1}-\vec{x_2}}{|\vec{x_1}-\vec{x_2}|}$  
+> $\vec{a_1}=\vec{F}/m_1; \vec{v_1}+=\vec{a_1}*dt; \vec{x_1}+=\vec{v_1}*dt;$  
+> $\vec{a_2}=-\vec{F}/m_2; \vec{v_2}+=\vec{a_2}*dt; \vec{x_2}+=\vec{v_2}*dt;$  
+
+- without friction:
+  > ![](matplot_res/2body_osc01.png)
+- with friction:
+  > ![](matplot_res/2body_osc02.png)
+- show momentum:
+  > ![](matplot_res/2body_osc03.png)
+
+```py
+import numpy as np
+import matplotlib.pyplot as plt
+
+fig = plt.figure()
+
+dt = 0.01
+k = 4
+m1 = 1
+m2 = 1
+L0 = 4
+c = 0
+F0 = 10
+Omega = 4
+N = 500
+
+x10 = np.array([3.0, 0.0])
+x20 = np.array([-3.0, 0.0])
+v10 = np.array([0.0, 4.0])
+v20 = np.array([0.0, -3.0])
+
+
+def osc_pos():
+    t = 0
+    x1 = x10.copy()
+    x2 = x20.copy()
+    v1 = v10.copy()
+    v2 = v20.copy()
+
+    t_list = []
+    pos_list1 = []
+    KE_list1 = []  # kinetic energy
+    PE_list1 = []  # potential energy
+    pos_list2 = []
+    KE_list2 = []  # kinetic energy
+    PE_list2 = []  # potential energy
+
+    momentum_list1 = []  # momentum
+    momentum_list2 = []
+    for _ in range(N):
+        t_list.append(t)
+        pos_list1.append(x1.copy())
+        KE_list1.append(0.5*m1*v1**2)
+        PE_list1.append(0.5*k*x1**2)
+        momentum_list1.append(m1*v1)
+
+        pos_list2.append(x2.copy())
+        KE_list2.append(0.5*m2*v2**2)
+        PE_list2.append(0.5*k*x2**2)
+        momentum_list2.append(m2*v2)
+
+        F = -k*(np.linalg.norm(x1-x2)-L0)*(x1-x2)/np.linalg.norm(x1-x2)
+        a1 = (F-c*v1)/m1
+        a2 = (-F-c*v2)/m2
+
+        v1 += a1*dt
+        x1 += v1*dt
+        v2 += a2*dt
+        x2 += v2*dt
+        t += dt
+
+    pos_array1 = np.stack(pos_list1, axis=0)
+    ke_array1 = np.stack(KE_list1, axis=0)
+    pe_array1 = np.stack(PE_list1, axis=0)
+    mom_array1 = np.stack(momentum_list1, axis=0)
+    pos_array2 = np.stack(pos_list2, axis=0)
+    ke_array2 = np.stack(KE_list2, axis=0)
+    pe_array2 = np.stack(PE_list2, axis=0)
+    mom_array2 = np.stack(momentum_list2, axis=0)
+    return t_list, pos_array1, ke_array1, pe_array1, mom_array1, pos_array2, ke_array2, pe_array2, mom_array2
+
+
+# simulation result
+t_list, pos_array1, ke_array1, pe_array1, mom_array1, pos_array2, ke_array2, pe_array2, mom_array2 = osc_pos()
+
+ax1 = plt.subplot(4, 1, 1)
+ax1.set_aspect('equal')
+# x, y
+plt.plot(pos_array1[:, 0], pos_array1[:, 1], 'r')
+plt.plot(pos_array2[:, 0], pos_array2[:, 1], 'g')
+plt.arrow(x10[0], x10[1], v10[0] * 0.2, v10[1]*0.2, head_width=0.2)
+plt.arrow(x20[0], x20[1], v20[0] * 0.2, v20[1]*0.2, head_width=0.2)
+plt.grid()
+
+plt.subplot(4, 1, 2)
+plt.plot(t_list, ke_array1[:, 0], 'g', t_list, ke_array1[:, 1], 'b')
+plt.plot(t_list, pe_array1[:, 0], 'y', t_list, pe_array1[:, 1], 'k')
+plt.subplot(4, 1, 3)
+plt.plot(t_list, ke_array2[:, 0], 'g', t_list, ke_array2[:, 1], 'b')
+plt.plot(t_list, pe_array2[:, 0], 'y', t_list, pe_array2[:, 1], 'k')
+
+plt.subplot(4, 1, 4)
+plt.plot(t_list, mom_array1+mom_array2)
+
+plt.show()
+```
