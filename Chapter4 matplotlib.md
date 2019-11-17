@@ -1714,3 +1714,64 @@ plt.plot(t_list, mom_array1+mom_array2)
 
 plt.show()
 ```
+
+example: two body gravity(sun with earth)
+> $\vec{F}=\frac{Gm_1m_2}{|\vec{x_1}-\vec{x_2}|^3}(\vec{x_1}-\vec{x_2})$  
+> $\vec{a_1}=\vec{F}/m_1; \vec{v_1}+=\vec{a_1}*dt; \vec{x_1}+=\vec{v_1}*dt$  
+> $\vec{a_2}=-\vec{F}/m_2; \vec{v_2}+=\vec{a_2}*dt; \vec{x_2}+=\vec{v_2}*dt$
+
+```py
+import numpy as np
+import matplotlib.pyplot as plt
+
+
+def Gravity(x1, x2, m1, m2):
+    G = 6.673E-11
+    r = np.linalg.norm(x1-x2)
+    return G*m1*m2*(x2-x1)/r**3
+
+
+m1 = 1.989E30  # sun
+x10 = np.zeros(2)
+v10 = np.zeros(2)
+m2 = 5.972E24  # earth
+x20 = np.array([1.496E11, 0.0])
+v20 = np.array([0.0, 2.978E4])
+dt = 24*3600 # 1d
+
+
+def oribit():
+    x1 = x10.copy()
+    v1 = v10.copy()
+    x2 = x20.copy()
+    v2 = v20.copy()
+    t = 0
+
+    pos_list1 = []
+    pos_list2 = []
+    for _ in range(365):
+        pos_list1.append(x1.copy())
+        pos_list2.append(x2.copy())
+
+        F = Gravity(x1, x2, m1, m2)
+        a1 = F/m1
+        a2 = -F/m2
+
+        v1 += a1*dt
+        v2 += a2*dt
+
+        x1 += v1*dt
+        x2 += v2*dt
+
+    pos_array1 = np.stack(pos_list1, axis=0)
+    pos_array2 = np.stack(pos_list2, axis=0)
+    return pos_array1, pos_array2
+
+
+pos_array1, pos_array2 = oribit()
+ax = plt.subplot(1, 1, 1)
+ax.set_aspect('equal')
+plt.plot(pos_array1[:, 0], pos_array1[:, 1], 'ro',
+         pos_array2[:, 0], pos_array2[:, 1], 'b')
+plt.show()
+```
