@@ -1342,7 +1342,6 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 fig = plt.figure()
-ax = fig.add_subplot(1, 1, 1)
 
 dt = 0.02
 k = 4
@@ -1383,14 +1382,13 @@ example: simple harmonic motion with oscillation driven force
 > $m\frac{d^2x}{dt^2}+kx=F_0\cos(\omega t)$, 通解+特解  
 > $\omega_0=\sqrt{\frac{k}{m}}$  
 > if $\omega\ne\omega_0$, $x=A\cos(\omega_0t)+B\sin(\omega_0t)+\frac{F_0/m}{\omega_0^2-\omega^2}\cos(\omega t)$;  
-> if $\omega=\omega_0$, $x=tD\sin(\omega t), D=\frac{F_0}{2m\omega}$
+> if $\omega=\omega_0$,guess $x_{ih}=C\cos(\omega t)+D\sin(\omega t) \rightarrow x=tD\sin(\omega t), D=\frac{F_0}{2m\omega}$
 
 ```py
 import numpy as np
 import matplotlib.pyplot as plt
 
 fig = plt.figure()
-ax = fig.add_subplot(1, 1, 1)
 
 dt = 0.02
 k = 4
@@ -1408,7 +1406,7 @@ def osc_pos():
     t_list = [t]
     x_list = [x]
     for _ in range(N-1):
-        a = -k*x/m+F0*np.cos(Omega*t)
+        a = -k*x/m+F0*np.cos(Omega*t)/m
         v += a*dt
         x += v*dt
         t += dt
@@ -1438,7 +1436,6 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 fig = plt.figure()
-ax = fig.add_subplot(1, 1, 1)
 
 dt = 0.02
 k = 4
@@ -1456,7 +1453,7 @@ def osc_pos():
     t_list = [t]
     x_list = [x]
     for _ in range(N-1):
-        a = -k*x/m+F0*np.cos(Omega*t)
+        a = -k*x/m+F0*np.cos(Omega*t)/m
         v += a*dt
         x += v*dt
         t += dt
@@ -1475,3 +1472,66 @@ plt.show()
 example: 共振
 > let $\omega=\omega_0$
 > ![](matplot_res/osc02.png)
+
+example: simple harmonic motion with friction
+> $F=-kx-cv$  
+> $m\frac{d^2x}{dt^2}+c\frac{dx}{dt}+kx=0$  
+> if $c^2\ge 4km$, $x=Ae^\frac{-c+\sqrt{c^2-4km}}{2m}+Be^\frac{-c-\sqrt{c^2-4km}}{2m}$; c is large, decay  
+> if $c^2\lt 4km$, $x=e^\frac{-c}{2m}*[A\cos(\frac{\sqrt{c^2-4km}}{2m}x)+B\sin(\frac{\sqrt{c^2-4km}}{2m}x)]$; c is small, decay+oscillation  
+
+example: SHM with friction and driven force
+> $F=-kx-cv+F_0\cos(\omega t)$  
+> $m\frac{d^2x}{dt^2}+c\frac{dx}{dt}+kx=F_0\cos(\omega t)$  
+> 特解guess: $x_{ih}=C\cos(\omega t)+D\sin(\omega t)\rightarrow\begin{cases}-Cm\omega^2+cD\omega+Ck=F_0\\-Dm\omega^2-cC\omega+kD=0\end{cases}$  
+
+![](matplot_res/osc03.png)
+
+```py
+import numpy as np
+import matplotlib.pyplot as plt
+
+fig = plt.figure()
+
+dt = 0.02
+k = 4
+m = 1
+c = 1
+F0 = 10
+Omega = 3
+N = 1000
+
+
+def osc_pos():
+    t = 0
+    x = 3
+    v = 0
+
+    t_list = [t]
+    x_list = [x]
+    KE_list = [0]  # kinetic energy
+    PE_list = [0.5*k*x**2]  # potential energy
+    for _ in range(N-1):
+        a = -k*x/m+F0*np.cos(Omega*t)/m-c*v
+        v += a*dt
+        x += v*dt
+        t += dt
+        x_list.append(x)
+        t_list.append(t)
+        KE_list.append(0.5*m*v**2)
+        PE_list.append(0.5*k*x**2)
+    return t_list, x_list, KE_list, PE_list
+
+
+# simulation result
+t_list, x_list, ke_list, pe_list = osc_pos()
+plt.subplot(2, 1, 1)
+plt.plot(t_list, x_list, 'r.')
+
+plt.subplot(2, 1, 2)
+plt.plot(t_list, ke_list, 'g', t_list, pe_list, 'b')
+
+ke_array = np.array(ke_list)
+pe_array = np.array(pe_list)
+plt.plot(t_list, ke_array+pe_array, 'r', dashes=[3, 2])
+plt.show()
+```
