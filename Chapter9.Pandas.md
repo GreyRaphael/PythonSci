@@ -259,3 +259,25 @@ s3=s2.reindex(index=range(12), method='ffill')
 # 11      c
 # dtype: object
 ```
+
+DataFrame reindex
+
+```py
+import numpy as np
+import pandas as pd
+
+df0=pd.DataFrame(np.random.rand(16).reshape(4, 4), index=['a', 'b', 'd', 'e'], columns=['c1', 'c2', 'c3', 'c4'])
+#     c1 	c2 	c3 	c4
+# a 	0.819308 	0.079193 	0.924312 	0.866187
+# b 	0.148369 	0.459822 	0.059087 	0.812420
+# d 	0.869805 	0.124662 	0.825912 	0.922507
+# e 	0.679514 	0.325763 	0.709922 	0.144940
+df1=df0.reindex(index=['a', 'b', 'c', 'd', 'e'])
+df2=df0.reindex(columns=['c1', 'c2', 'c3', 'c4', 'c5'])
+df3=df1=df0.reindex(index=['a', 'b', 'c', 'd', 'e'], columns=['c1', 'c2', 'c3', 'c4', 'c5'])
+
+df3.reindex(index=['a', 'd', 'e'])
+df3.reindex(columns=['c1', 'c2', 'c4'])
+df3.drop(index=['a', 'b'], axis=0)
+df3.drop(columns=['c1', 'c2'], axis=1)
+```
