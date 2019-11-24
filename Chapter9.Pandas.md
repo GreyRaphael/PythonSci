@@ -227,6 +227,16 @@ s1=s0.reindex(index=['a', 'b', 'C', 'D', 'E'], fill_value=10)
 # D    10
 # E    10
 # dtype: int64
+s1.reindex(index=['a', 'b'])
+# a     1
+# b     2
+# dtype: int64
+s1.drop('a')
+# b     2
+# C    10
+# D    10
+# E    10
+# dtype: int64
 
 s2=pd.Series(['a', 'b', 'c'], index=[1, 5, 10])
 # 1     a
