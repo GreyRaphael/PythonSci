@@ -8,3 +8,6 @@ DataScience Procedure: IOSEMN
 - Model: scikit-learn, scipy, tensorflow2
 - iNterpret: boken, D3.js
 
+> - pandas, scipy 建立在numpy基础上
+> - scikit-learn建立在scipy基础上, 提供常用的机器学习算法: 聚类(cluster analysis)、regression
+
