@@ -154,3 +154,53 @@ df_new2['Share'].values[3:5]=[33,44]
 # replace whole column
 df_new2['Share']=pd.Series([55, 66], index=[5, 6])
 ```
+
+pandas indexing
+
+```py
+# some function
+df0.shape
+df0.head() # first 5 records
+df0.head(10) # first 10 records
+df0.tail() # last 5 records
+df0.to_records(index=False) # to list of tuples
+
+# indexing dataframe
+df0['Ratings']
+df0[['Ratings', 'Nov 2019']]
+df0[['Ratings', 'Nov 2019']][10:15]
+df0.iloc[10:15,4:6]
+df0.loc[10:15, ['Ratings', 'Nov 2019']] 
+df0.loc[10:15, :"Ratings"] 
+```
+
+example: iloc vs loc
+
+```py
+df1=df0[10:20]
+# Nov 2019 	Nov 2018 	Change 	Programming Language 	Ratings 	Change.1
+# 10 	11 	16 	NaN 	Ruby 	1.261% 	+0.17%
+# 11 	12 	11 	NaN 	Objective-C 	1.195% 	-0.28%
+# 12 	13 	13 	NaN 	Delphi/Object Pascal 	1.142% 	-0.28%
+# 13 	14 	25 	NaN 	Groovy 	1.099% 	+0.50%
+# 14 	15 	15 	NaN 	Assembly language 	1.022% 	-0.09%
+# 15 	16 	14 	NaN 	R 	0.980% 	-0.43%
+# 16 	17 	20 	NaN 	Visual Basic 	0.957% 	+0.10%
+# 17 	18 	23 	NaN 	D 	0.927% 	+0.25%
+# 18 	19 	17 	NaN 	MATLAB 	0.890% 	-0.14%
+# 19 	20 	10 	NaN 	Go 	0.853% 	-0.64%
+
+# 严格根据index索引
+df1.iloc[5:8] 
+#  	Nov 2019 	Nov 2018 	Change 	Programming Language 	Ratings 	Change.1
+# 15 	16 	14 	NaN 	R 	0.980% 	-0.43%
+# 16 	17 	20 	NaN 	Visual Basic 	0.957% 	+0.10%
+# 17 	18 	23 	NaN 	D 	0.927% 	+0.25%
+
+# 根据label索引
+df1.loc[15:17]
+#  	Nov 2019 	Nov 2018 	Change 	Programming Language 	Ratings 	Change.1
+# 15 	16 	14 	NaN 	R 	0.980% 	-0.43%
+# 16 	17 	20 	NaN 	Visual Basic 	0.957% 	+0.10%
+# 17 	18 	23 	NaN 	D 	0.927% 	+0.25%
+```
