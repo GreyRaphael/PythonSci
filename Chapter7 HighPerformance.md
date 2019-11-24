@@ -44,6 +44,15 @@ conda update --all
 Jupyter是**交互执行框架**, 通过不同的[kernel](https://github.com/jupyter/jupyter/wiki/Jupyter-kernels)执行不同的编程语言; 主要支持的语言: Python, R, Julia, C++;
 > 对于Python语言的kernel是IPython;
 
+IPython kernel原理
+- 主要负责运行用户代码
+- 通过stdin/stdout和ipython的shell交互
+- 用json message通过ZeroMQ与notebook交互
+> ![](Res07/ipy_kernel_and_terminal.png)
+
+notebook原理
+> ![](Res07/notebook_components.png)
+
 Jupyter设置远程访问
 
 ```bash
