@@ -8,6 +8,7 @@
   - [merge & concatenate & combine](#merge--concatenate--combine)
   - [apply](#apply)
   - [drop duplicate](#drop-duplicate)
+  - [datetime & resample](#datetime--resample)
   - [reindex](#reindex)
   - [NAN](#nan)
   - [multiindex](#multiindex)
@@ -488,6 +489,73 @@ df1['id'].duplicated()
 
 df1.drop_duplicates()
 df1.drop_duplicates(['id'])
+```
+
+## datetime & resample
+
+example: datetime
+
+```py
+import numpy as np
+import pandas as pd
+from datetime import datetime
+
+datetime_list=[
+    datetime(2017, 1, 1),
+    datetime(2017, 10, 1),
+    datetime(2017, 10, 11),
+    datetime(2019, 1, 1),
+    datetime(2020, 1, 1),
+]
+s1=pd.Series(range(5), index=datetime_list)
+# following 4 is the same
+s1[1]
+s1[datetime(2017, 10, 1)]
+s1['2017-10-1']
+s1['20171001']
+
+s1['2017']
+# 2017-01-01    0
+# 2017-10-01    1
+# 2017-10-11    2
+# dtype: int64
+
+date_list2=pd.date_range(start='20191001', periods=10) # every day
+date_list3=pd.date_range(start='20191001', periods=10, freq='W-MON') # every monday
+date_list4=pd.date_range(start='20191001', periods=10, freq='5H') # every 5 hours
+```
+
+exmaple: resample
+
+```py
+import numpy as np
+import pandas as pd
+
+t_range=pd.date_range('20190101', '20191231')
+s1=pd.Series(np.random.randn(len(t_range)), index=t_range)
+# date shrink
+s2=s1.resample('M').mean()
+# data grow
+s3=s1.resample('H').ffill() # forward fill, backword fill: bfill
+```
+
+example: stock plot
+
+```py
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+
+t_range=pd.date_range('20190101', '20191231', freq='H')
+stock_df=pd.DataFrame(index=t_range)
+stock_df['BABA']=np.random.randint(10, 100, size=len(t_range))
+stock_df['TECENT']=np.random.randint(10, 60, size=len(t_range))
+
+weekly_df=pd.DataFrame()
+weekly_df['BABA']=stock_df['BABA'].resample('W').mean()
+weekly_df['TECENT']=stock_df['TECENT'].resample('W').mean()
+
+weekly_df.plot()
 ```
 
 ## reindex
