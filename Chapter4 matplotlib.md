@@ -1,6 +1,7 @@
 # matplotlib
 
 - [matplotlib](#matplotlib)
+  - [Architecture](#architecture)
   - [Some Examples](#some-examples)
   - [Format Strings](#format-strings)
   - [set and get object properties](#set-and-get-object-properties)
@@ -17,6 +18,12 @@
 ![](res/intro01.png)
 
 [matplotlib](https://matplotlib.org/gallery.html)是python最著名的绘图库，它提供了一整套和matlab相似的命令API; 还有一个`pylab`适合ipython下使用
+
+## Architecture
+
+- Backend: 将图显示在哪里
+- Artist: 图显示成什么样子
+- Scripting: pyplot, python api
 
 ## Some Examples
 
