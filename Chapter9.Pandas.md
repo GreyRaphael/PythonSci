@@ -3,6 +3,7 @@
 - [Pandas](#pandas)
   - [Series](#series)
   - [DataFrame](#dataframe)
+  - [reindex](#reindex)
 
 
 ## Series
@@ -203,4 +204,48 @@ df1.loc[15:17]
 # 15 	16 	14 	NaN 	R 	0.980% 	-0.43%
 # 16 	17 	20 	NaN 	Visual Basic 	0.957% 	+0.10%
 # 17 	18 	23 	NaN 	D 	0.927% 	+0.25%
+```
+
+## reindex
+
+Series reindex
+
+```py
+import numpy as np
+import pandas as pd
+
+s0=pd.Series([1, 2, 3, 4], index=['a', 'b', 'c', 'd'])
+# a    1
+# b    2
+# c    3
+# d    4
+# dtype: int64
+s1=s0.reindex(index=['a', 'b', 'C', 'D', 'E'], fill_value=10)
+# a     1
+# b     2
+# C    10
+# D    10
+# E    10
+# dtype: int64
+
+s2=pd.Series(['a', 'b', 'c'], index=[1, 5, 10])
+# 1     a
+# 5     b
+# 10    c
+# dtype: object
+
+s3=s2.reindex(index=range(12), method='ffill')
+# 0     NaN
+# 1       a
+# 2       a
+# 3       a
+# 4       a
+# 5       b
+# 6       b
+# 7       b
+# 8       b
+# 9       b
+# 10      c
+# 11      c
+# dtype: object
 ```
