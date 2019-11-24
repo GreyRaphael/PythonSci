@@ -3,6 +3,7 @@
 - [Pandas](#pandas)
   - [Series](#series)
   - [DataFrame](#dataframe)
+  - [simple operation](#simple-operation)
   - [reindex](#reindex)
   - [NAN](#nan)
   - [multiindex](#multiindex)
@@ -98,6 +99,8 @@ s5.index.name='grey'
 
 ## DataFrame
 
+DataFrame本质由一列列的Series组成
+
 [dataframe io](https://pandas.pydata.org/pandas-docs/stable/user_guide/io.html)
 
 | Format Type | Data Description     | Reader         | Writer       |
@@ -117,6 +120,36 @@ s5.index.name='grey'
 | binary      | Python Pickle Format | read_pickle    | to_pickle    |
 | SQL         | SQL                  | read_sql       | to_sql       |
 | SQL         | Google Big Query     | read_gbq       | to_gbq       |
+
+```py
+import numpy as np
+import pandas as pd
+
+s0=pd.Series([1, 2, 3], index=['a', 'b', 'c'])
+s1=pd.Series([4, 5, 6], index=['b', 'c', 'd'])
+
+df1=pd.DataFrame()
+df1['BJ']=s0
+df1['SH']=s1
+# 	BJ 	SH
+# a 	1 	NaN
+# b 	2 	4.0
+# c 	3 	5.0
+
+for row in df1.iterrows():
+    print(type(row)) # tuple
+    # index, values
+    print(type(row[0]), type(row[1])) # <class 'str'> <class 'pandas.core.series.Series'>
+    print(row[1].index) # Index(['BJ', 'SH'], dtype='object')
+
+type(df1['BJ']) # pandas.core.series.Series
+df1['BJ'].index # Index(['a', 'b', 'c'], dtype='object')
+
+df2=pd.DataFrame([s0, s1])
+#  	a 	b 	c 	d
+# 0 	1.0 	2.0 	3.0 	NaN
+# 1 	NaN 	4.0 	5.0 	6.0
+```
 
 ```py
 import numpy as np
@@ -210,6 +243,45 @@ df1.loc[15:17]
 # 15 	16 	14 	NaN 	R 	0.980% 	-0.43%
 # 16 	17 	20 	NaN 	Visual Basic 	0.957% 	+0.10%
 # 17 	18 	23 	NaN 	D 	0.927% 	+0.25%
+```
+
+## simple operation
+
+```py
+import numpy as np
+import pandas as pd
+
+s1=pd.Series([1, 2, 3], index=['a', 'b', 'c'])
+s2=pd.Series([4, 5, 6], index=['b', 'c', 'd'])
+s1+s2 # 对应index相加
+# a    NaN
+# b    6.0
+# c    8.0
+# d    NaN
+# dtype: float64
+
+# Series sort
+s1.sort_values(ascending=False)
+s1.sort_index(ascending=False)
+
+df1=pd.DataFrame(np.arange(4).reshape(2, 2), index=['a', 'b'], columns=['BJ', 'SH'])
+df2=pd.DataFrame(np.arange(9).reshape(3, 3), index=['a', 'b', 'c'], columns=['BJ', 'SH', 'SZ'])
+df1+df2
+
+# DataFrame sort
+df1.sort_values(by='BJ', ascending=False)
+df1.sort_index(ascending=False)
+
+df3=pd.DataFrame([[1, 2, 3], [4, 5, np.nan]], index=['a', 'b'], columns=['BJ', 'SH','SZ'])
+df3.sum()
+# df3.sum(axis=1)
+df3.min()
+# BJ    1.0
+# SH    2.0
+# SZ    3.0
+# dtype: float64
+
+df3.describe()
 ```
 
 ## reindex
