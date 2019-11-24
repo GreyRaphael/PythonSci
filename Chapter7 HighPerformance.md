@@ -3,30 +3,48 @@
 <!-- TOC -->
 
 - [High Performance](#high-performance)
-    - [Jupyter](#jupyter)
-        - [Jupyter设置远程访问](#jupyter设置远程访问)
-    - [IPython](#ipython)
-        - [IPython Magic Commands](#ipython-magic-commands)
-    - [numpy数据类型系统](#numpy数据类型系统)
-    - [Cython](#cython)
-        - [Install Cython on windows](#install-cython-on-windows)
-        - [use cython](#use-cython)
-        - [Compare Optimization](#compare-optimization)
-            - [recursive fibonacci optimization](#recursive-fibonacci-optimization)
-            - [iteration fibonacci optimization](#iteration-fibonacci-optimization)
-            - [cached fibonacci optimization](#cached-fibonacci-optimization)
-            - [summary](#summary)
-        - [numpy optimization](#numpy-optimization)
-    - [`ipyparallel` module](#ipyparallel-module)
+  - [Anaconda](#anaconda)
+  - [Jupyter](#jupyter)
+  - [IPython](#ipython)
+    - [IPython Magic Commands](#ipython-magic-commands)
+  - [numpy数据类型系统](#numpy%e6%95%b0%e6%8d%ae%e7%b1%bb%e5%9e%8b%e7%b3%bb%e7%bb%9f)
+  - [Cython](#cython)
+    - [Install Cython on windows](#install-cython-on-windows)
+    - [use cython](#use-cython)
+    - [Compare Optimization](#compare-optimization)
+      - [recursive fibonacci optimization](#recursive-fibonacci-optimization)
+      - [iteration fibonacci optimization](#iteration-fibonacci-optimization)
+      - [cached fibonacci optimization](#cached-fibonacci-optimization)
+      - [summary](#summary)
+    - [numpy optimization](#numpy-optimization)
+  - [`ipyparallel` module](#ipyparallel-module)
 
 <!-- /TOC -->
+
+## Anaconda
+
+```bash
+# manage environment
+conda create -n myenv1 python=3.6
+conda create --name myenv2
+
+conda activate myenv2
+conda deactivate
+
+conda remove --name myenv2 --all
+
+# manage package
+conda list
+conda install autopep8
+conda update --all
+```
 
 ## Jupyter
 
 Jupyter是**交互执行框架**, 通过不同的[kernel](https://github.com/jupyter/jupyter/wiki/Jupyter-kernels)执行不同的编程语言; 主要支持的语言: Python, R, Julia, C++;
 > 对于Python语言的kernel是IPython;
 
-### Jupyter设置远程访问
+Jupyter设置远程访问
 
 ```bash
 C:\ProgramData\Anaconda3\Scripts\jupyter notebook --generate-config
