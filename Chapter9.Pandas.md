@@ -879,6 +879,7 @@ g1.agg(custom_agg)
 ```
 
 example: multi group
+> 一般multi group之后通过`unstack`来得到dataframe
 
 ```py
 g2=df.groupby(['weather', 'wind'])
