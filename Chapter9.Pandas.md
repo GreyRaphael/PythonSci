@@ -8,6 +8,7 @@
   - [multiindex](#multiindex)
   - [map](#map)
   - [replace](#replace)
+  - [bins](#bins)
 
 
 ## Series
@@ -420,3 +421,24 @@ s0=pd.Series(range(10))
 s0.replace(1, 11)
 s0.replace({2:22, 3:33})
 s0.replace([5, 6, 7], [55, 66, 77])
+```
+
+## bins
+
+```py
+import numpy as np
+import pandas as pd
+
+score_list=np.random.randint(100, size=50)
+# (0, 59], (59, 70], (70, 80], (80, 100]
+bins=[0, 59, 70, 80, 100]
+score_cut=pd.cut(score_list, bins)
+pd.value_counts(score_cut)
+
+
+df=pd.DataFrame()
+df['score']=score_list
+df['student']=[pd.util.testing.rands(4) for _ in range(50)]
+
+df['category']=pd.cut(df['score'], bins, labels=['low', 'ok', 'good', 'great'])
+```
