@@ -1193,3 +1193,19 @@ print(r1)
 np.savetxt('aa.txt',a, fmt='%d', delimiter=',')
 print(np.loadtxt('aa.txt', delimiter=','))
 ```
+
+numpy 序列化 by pickle
+
+```py
+import numpy as np
+import pickle
+
+a=np.arange(10)
+with open('a.pkl', 'wb') as file:
+    pickle.dump(a, file)
+
+with open('a.pkl', 'rb') as file:
+    b=pickle.load(file)
+
+print(b)
+```
