@@ -7,6 +7,7 @@
   - [index and columns rename](#index-and-columns-rename)
   - [merge & concatenate & combine](#merge--concatenate--combine)
   - [apply](#apply)
+  - [drop duplicate](#drop-duplicate)
   - [reindex](#reindex)
   - [NAN](#nan)
   - [multiindex](#multiindex)
@@ -422,8 +423,8 @@ df3=df1.combine_first(df2)
 # Book.csv
 time,data
 1473411962,id: 1 score: 10 age: 22
-1473411962,id: 2 score: 13 age: 23
-1473411962,id: 3 score: 10 age: 24
+1473411962,id: 1 score: 13 age: 23
+1473411962,id: 1 score: 10 age: 24
 1473411962,id: 4 score: 10 age: 25
 1473411963,id: 5 score: 10 age: 26
 1473411964,id: 6 score: 89 age: 27
@@ -451,8 +452,8 @@ df3=df2.rename(columns={0:'id', 1:'score', 2:'age'})
 df_new=df1.combine_first(df3)
 #  	age 	data 	id 	new_col 	score 	time
 # 0 	22.0 	id: 1 score: 10 age: 22 	1.0 	A 	10.0 	1473411962
-# 1 	23.0 	id: 2 score: 13 age: 23 	2.0 	A 	13.0 	1473411962
-# 2 	24.0 	id: 3 score: 10 age: 24 	3.0 	A 	10.0 	1473411962
+# 1 	23.0 	id: 1 score: 13 age: 23 	2.0 	A 	13.0 	1473411962
+# 2 	24.0 	id: 1 score: 10 age: 24 	3.0 	A 	10.0 	1473411962
 # 3 	25.0 	id: 4 score: 10 age: 25 	4.0 	A 	10.0 	1473411962
 # 4 	26.0 	id: 5 score: 10 age: 26 	5.0 	A 	10.0 	1473411963
 # 5 	27.0 	id: 6 score: 89 age: 27 	6.0 	A 	89.0 	1473411964
@@ -462,6 +463,31 @@ df_new=df1.combine_first(df3)
 
 del df_new['data']
 df_new.to_csv('Book2.csv', index=False)
+```
+
+## drop duplicate
+
+```py
+import numpy as np
+import pandas as pd
+
+df1=pd.read_csv('Book2.csv')
+len(df1) # 9
+len(df1['id'].unique()) # 7
+df1['id'].duplicated()
+# 0    False
+# 1     True
+# 2     True
+# 3    False
+# 4    False
+# 5    False
+# 6    False
+# 7    False
+# 8    False
+# Name: id, dtype: bool
+
+df1.drop_duplicates()
+df1.drop_duplicates(['id'])
 ```
 
 ## reindex
