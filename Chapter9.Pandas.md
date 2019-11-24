@@ -6,6 +6,7 @@
   - [simple operation](#simple-operation)
   - [index and columns rename](#index-and-columns-rename)
   - [merge & concatenate & combine](#merge--concatenate--combine)
+  - [apply](#apply)
   - [reindex](#reindex)
   - [NAN](#nan)
   - [multiindex](#multiindex)
@@ -413,6 +414,54 @@ df3=df1.combine_first(df2)
 # 1 	4.0 	1.0 	1.0
 # 2 	1.0 	8.0 	9.0
 # 3 	1.0 	1.0 	1.0
+```
+
+## apply
+
+```bash
+# Book.csv
+time,data
+1473411962,id: 1 score: 10 age: 22
+1473411962,id: 2 score: 13 age: 23
+1473411962,id: 3 score: 10 age: 24
+1473411962,id: 4 score: 10 age: 25
+1473411963,id: 5 score: 10 age: 26
+1473411964,id: 6 score: 89 age: 27
+1473411965,id: 7 score: 10 age: 28
+1473411966,id: 8 score: 56 age: 29
+1473411967,id: 9 score: 10 age: 30
+```
+
+```py
+import numpy as np
+import pandas as pd
+
+df1=pd.read_csv('Book1.csv')
+df1.shape[0] # 9
+
+df1['new_col']=pd.Series(['a']*9)
+df1['new_col']=df1['new_col'].apply(str.upper)
+
+def func(line):
+    items=line.split(' ')
+    return pd.Series([items[1], items[3], items[5]])
+
+df2=df1['data'].apply(func)
+df3=df2.rename(columns={0:'id', 1:'score', 2:'age'})
+df_new=df1.combine_first(df3)
+#  	age 	data 	id 	new_col 	score 	time
+# 0 	22.0 	id: 1 score: 10 age: 22 	1.0 	A 	10.0 	1473411962
+# 1 	23.0 	id: 2 score: 13 age: 23 	2.0 	A 	13.0 	1473411962
+# 2 	24.0 	id: 3 score: 10 age: 24 	3.0 	A 	10.0 	1473411962
+# 3 	25.0 	id: 4 score: 10 age: 25 	4.0 	A 	10.0 	1473411962
+# 4 	26.0 	id: 5 score: 10 age: 26 	5.0 	A 	10.0 	1473411963
+# 5 	27.0 	id: 6 score: 89 age: 27 	6.0 	A 	89.0 	1473411964
+# 6 	28.0 	id: 7 score: 10 age: 28 	7.0 	A 	10.0 	1473411965
+# 7 	29.0 	id: 8 score: 56 age: 29 	8.0 	A 	56.0 	1473411966
+# 8 	30.0 	id: 9 score: 10 age: 30 	9.0 	A 	10.0 	1473411967
+
+del df_new['data']
+df_new.to_csv('Book2.csv', index=False)
 ```
 
 ## reindex
