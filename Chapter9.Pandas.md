@@ -7,6 +7,7 @@
   - [NAN](#nan)
   - [multiindex](#multiindex)
   - [map](#map)
+  - [replace](#replace)
 
 
 ## Series
@@ -409,3 +410,13 @@ df1=pd.DataFrame({'city':['BJ', 'SH', 'SZ'], 'population':[1000, 2000, 1500]}, i
 df1['GDP']=pd.Series([20, 100, 80], index=['a', 'b', 'c'])
 ```
 
+## replace
+
+```py
+import numpy as np
+import pandas as pd
+
+s0=pd.Series(range(10))
+s0.replace(1, 11)
+s0.replace({2:22, 3:33})
+s0.replace([5, 6, 7], [55, 66, 77])
