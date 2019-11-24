@@ -161,6 +161,7 @@ df_new2['Share'].values[3:5]=[33,44]
 df_new2['Share']=pd.Series([55, 66], index=[5, 6])
 ```
 
+
 pandas indexing
 
 ```py
@@ -444,7 +445,8 @@ df['student']=[pd.util.testing.rands(4) for _ in range(50)]
 df['category']=pd.cut(df['score'], bins, labels=['low', 'ok', 'good', 'great'])
 
 # groupby
-g1=df.groupby(df['category'])
+# g1=df.groupby(df['category'])
+g1=df.groupby('category')
 g1.groups
 
 df1=g1.get_group('good') # return is dataframe
@@ -486,3 +488,13 @@ g1.agg(custom_agg)
 # great 	14
 ```
 
+example: multi group
+
+```py
+g2=df.groupby(['weather', 'wind'])
+g2.groups
+g2.get_group(('BJ', 3))
+
+for (name1, name2), group in g2:
+    pass
+```
