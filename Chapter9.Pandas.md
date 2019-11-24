@@ -8,7 +8,7 @@
   - [multiindex](#multiindex)
   - [map](#map)
   - [replace](#replace)
-  - [bins & groupby](#bins--groupby)
+  - [bins & groupby & aggregate](#bins--groupby--aggregate)
 
 
 ## Series
@@ -423,7 +423,7 @@ s0.replace({2:22, 3:33})
 s0.replace([5, 6, 7], [55, 66, 77])
 ```
 
-## bins & groupby
+## bins & groupby & aggregate
 
 > ![](Res09/groupby01.png)
 
@@ -441,7 +441,6 @@ pd.value_counts(score_cut)
 df=pd.DataFrame()
 df['score']=score_list
 df['student']=[pd.util.testing.rands(4) for _ in range(50)]
-
 df['category']=pd.cut(df['score'], bins, labels=['low', 'ok', 'good', 'great'])
 
 # groupby
@@ -465,4 +464,25 @@ for category, df in list(g1):
 
 dict1=dict(list(g1))
 dict1['great'] # return is DataFrame
+
+# aggregate
+g1.describe() # get many statistical info
+g1.agg('min')
+# 	score 	student
+# category 		
+# low 	2 	0ZpN
+# ok 	61 	BBV8
+# good 	71 	FLuE
+# great 	82 	0KC3
+def custom_agg(category):
+    return category.max()-category.min()
+
+g1.agg(custom_agg)
+# 	score
+# category 	
+# low 	56
+# ok 	8
+# good 	6
+# great 	14
 ```
+
