@@ -6,6 +6,7 @@
   - [reindex](#reindex)
   - [NAN](#nan)
   - [multiindex](#multiindex)
+  - [map](#map)
 
 
 ## Series
@@ -334,6 +335,8 @@ df0.fillna(value={0:0, 1:11, 2:22})
 
 ## multiindex
 
+多级index让Series具有二维结构
+
 ```py
 import numpy as np
 import pandas as pd
@@ -382,3 +385,27 @@ df2=pd.DataFrame(np.random.randn(16).reshape(4, 4), index=[['a', 'a', 'b', 'b'],
 # 2 	0.578760 	-0.111816 	-2.348368 	0.302795
 df2['BJ']
 ```
+
+## map
+
+```py
+import numpy as np
+import pandas as pd
+
+df0=pd.DataFrame({'city':['BJ', 'SH', 'SZ'], 'population':[1000, 2000, 1500]})
+# 	city 	population
+# 0 	BJ 	1000
+# 1 	SH 	2000
+# 2 	SZ 	1500
+
+gdp_map={'BJ':2, 'SH': 10, 'SZ':8}
+df0['GDP']=df0['city'].map(gdp_map)
+
+# 仅仅适用于没有指定index的情形
+df0['GDP']=pd.Series([20, 100, 80])
+
+df1=pd.DataFrame({'city':['BJ', 'SH', 'SZ'], 'population':[1000, 2000, 1500]}, index=['a', 'b', 'c'])
+# 必须指定index,否则全是NaN
+df1['GDP']=pd.Series([20, 100, 80], index=['a', 'b', 'c'])
+```
+
