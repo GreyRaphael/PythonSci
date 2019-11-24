@@ -8,7 +8,7 @@
   - [multiindex](#multiindex)
   - [map](#map)
   - [replace](#replace)
-  - [bins](#bins)
+  - [bins & groupby](#bins--groupby)
 
 
 ## Series
@@ -423,7 +423,9 @@ s0.replace({2:22, 3:33})
 s0.replace([5, 6, 7], [55, 66, 77])
 ```
 
-## bins
+## bins & groupby
+
+> ![](Res09/groupby01.png)
 
 ```py
 import numpy as np
@@ -441,4 +443,26 @@ df['score']=score_list
 df['student']=[pd.util.testing.rands(4) for _ in range(50)]
 
 df['category']=pd.cut(df['score'], bins, labels=['low', 'ok', 'good', 'great'])
+
+# groupby
+g1=df.groupby(df['category'])
+g1.groups
+
+df1=g1.get_group('good') # return is dataframe
+
+# (70, 80] average score
+df1.mean() # return is Series
+
+# groupby=split+Apply mean()+combine
+g1.mean() # return is DataFrame
+# g1.max()
+# g1.min()
+
+# group to list or dictionary
+for category, df in list(g1):
+    print(category)
+    print(df)
+
+dict1=dict(list(g1))
+dict1['great'] # return is DataFrame
 ```
