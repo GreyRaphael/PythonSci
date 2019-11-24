@@ -1,26 +1,27 @@
 # Python for Science Introduction
 
 - [Python for Science Introduction](#python-for-science-introduction)
-    - [some libs](#some-libs)
-    - [ndarray object](#ndarray-object)
-        - [create array](#create-array)
-        - [numpy index](#numpy-index)
-            - [使用`:`标准方法读写数据](#)
-            - [使用序列来读写](#)
-            - [bool数组&bool列表](#boolbool)
-        - [multi-dimensional arange](#multi-dimensional-arange)
-        - [structure array](#structure-array)
-        - [ndarray in memory](#ndarray-in-memory)
-    - [ufunc(universal function)](#ufuncuniversal-function)
-        - [some basic operator](#some-basic-operator)
-        - [broadcasting](#broadcasting)
-        - [other ufuncs](#other-ufuncs)
-    - [Matrix Operation](#matrix-operation)
-        - [`np.dot()`](#npdot)
-        - [`np.outer()`](#npouter)
-        - [`np.inner()`](#npinner)
-        - [`np.linalg`](#nplinalg)
-    - [file operation](#file-operation)
+  - [some libs](#some-libs)
+  - [ndarray object](#ndarray-object)
+    - [create array](#create-array)
+    - [numpy index](#numpy-index)
+      - [使用`:`标准方法读写数据](#%e4%bd%bf%e7%94%a8%e6%a0%87%e5%87%86%e6%96%b9%e6%b3%95%e8%af%bb%e5%86%99%e6%95%b0%e6%8d%ae)
+      - [使用序列来读写](#%e4%bd%bf%e7%94%a8%e5%ba%8f%e5%88%97%e6%9d%a5%e8%af%bb%e5%86%99)
+      - [bool数组&bool列表](#bool%e6%95%b0%e7%bb%84bool%e5%88%97%e8%a1%a8)
+    - [multi-dimensional arange](#multi-dimensional-arange)
+    - [structure array](#structure-array)
+    - [ndarray in memory](#ndarray-in-memory)
+  - [ufunc(universal function)](#ufuncuniversal-function)
+    - [some basic operator](#some-basic-operator)
+    - [broadcasting](#broadcasting)
+    - [other ufuncs](#other-ufuncs)
+  - [Matrix Operation](#matrix-operation)
+    - [matrix vs array](#matrix-vs-array)
+    - [`np.dot()`](#npdot)
+    - [`np.outer()`](#npouter)
+    - [`np.inner()`](#npinner)
+    - [`np.linalg`](#nplinalg)
+  - [file operation](#file-operation)
 
 ## some libs
 
@@ -807,6 +808,45 @@ print(a1*b1)
 # [[1 2 3]
 #  [4 5 6]
 #  [7 8 9]]
+```
+
+### matrix vs array
+
+Numpy matrices are strictly 2-dimensional, while numpy arrays (ndarrays) are N-dimensional.
+
+```py
+import numpy as np
+
+a=np.eye(5)
+b=np.random.randint(10, size=25).reshape(5, 5)
+A=np.mat(a)
+B=np.mat(b)
+
+print(a+b)
+# array([[7, 7, 5, 7, 3],
+#        [8, 3, 7, 4, 8],
+#        [2, 4, 8, 9, 2],
+#        [8, 1, 8, 7, 7],
+#        [0, 1, 1, 1, 7]])
+print(a*b)
+# array([[7., 0., 0., 0., 0.],
+#        [0., 3., 0., 0., 0.],
+#        [0., 0., 8., 0., 0.],
+#        [0., 0., 0., 7., 0.],
+#        [0., 0., 0., 0., 7.]])
+
+print(A+B)
+# matrix([[8., 7., 5., 7., 3.],
+#         [8., 4., 7., 4., 8.],
+#         [2., 4., 9., 9., 2.],
+#         [8., 1., 8., 8., 7.],
+#         [0., 1., 1., 1., 8.]])
+print(A*B)
+# matrix([[7., 7., 5., 7., 3.],
+#         [8., 3., 7., 4., 8.],
+#         [2., 4., 8., 9., 2.],
+#         [8., 1., 8., 7., 7.],
+#         [0., 1., 1., 1., 7.]])
 ```
 
 ### `np.dot()`
