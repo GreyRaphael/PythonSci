@@ -4,6 +4,7 @@
   - [Series](#series)
   - [DataFrame](#dataframe)
   - [reindex](#reindex)
+  - [NAN](#nan)
 
 
 ## Series
@@ -281,3 +282,51 @@ df3.reindex(columns=['c1', 'c2', 'c4'])
 df3.drop(index=['a', 'b'], axis=0)
 df3.drop(columns=['c1', 'c2'], axis=1)
 ```
+
+## NAN
+
+> tip: jupyter中`Shift+Tab`查看docstring
+
+```py
+import numpy as np
+import pandas as pd
+
+a=np.nan
+type(a) # float
+a+1 # nan
+
+# Series with nan
+s0=pd.Series([1, 2, np.nan, 4])
+# 0    1.0
+# 1    2.0
+# 2    NaN
+# 3    4.0
+# dtype: float64
+s0.isnull()
+s0.notnull()
+s0.dropna() # 不改变s0
+
+# DataFrame with nan
+df0=pd.DataFrame([[1, 2, 3], [5, np.nan,6], [7, np.nan, np.nan]])
+# 	0 	1 	2
+# 0 	1 	2.0 	3.0
+# 1 	5 	NaN 	6.0
+# 2 	7 	NaN 	NaN
+df0.isnull()
+df0.notnull()
+df0.dropna()
+df0.dropna(axis=0)
+df0.dropna(axis=1)
+df0.dropna(axis=0, how='all')
+
+# nan数目>=2,会被删除
+df0.dropna(thresh=2, axis=1)
+df0.fillna(value=1)
+
+# column 0 fill with 0, column 1 fill with 11, column 2 fill with 22
+df0.fillna(value={0:0, 1:11, 2:22})
+#  	0 	1 	2
+# 0 	1 	2.0 	3.0
+# 1 	5 	11.0 	6.0
+# 2 	7 	11.0 	22.0
+````
