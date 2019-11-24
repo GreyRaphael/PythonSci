@@ -5,6 +5,7 @@
   - [DataFrame](#dataframe)
   - [simple operation](#simple-operation)
   - [index and columns rename](#index-and-columns-rename)
+  - [merge & concatenate & combine](#merge--concatenate--combine)
   - [reindex](#reindex)
   - [NAN](#nan)
   - [multiindex](#multiindex)
@@ -326,6 +327,92 @@ df3=df2.rename(index={'bj':'BJ', 'sh':'SH'}, columns={'col-1':'col1'})
 list1=[1, 2, 3, 4]
 list2=[str(i) for i in list1]
 list3=list(map(str, list1))
+```
+
+## merge & concatenate & combine
+
+example: merge
+
+```py
+import numpy as np
+import pandas as pd
+
+df1=pd.DataFrame({'key':['a','b','c', 'a'], 'c1':[4, 5, 6, 7]})
+df2=pd.DataFrame({'key':['a','B','c'], 'co1':[1, 2, 3]})
+
+pd.merge(df1, df2)
+pd.merge(df1, df2, on='key', how='left')
+pd.merge(df1, df2, on='key', how='right')
+pd.merge(df1, df2, on='key', how='outer')
+```
+
+example: concatenate
+
+```py
+import numpy as np
+import pandas as pd
+
+a1=np.eye(3)
+a2=np.eye(3)
+a3=np.concatenate([a1, a2])
+a4=np.concatenate([a1, a2], axis=1)
+
+s1=pd.Series([1, 2, 3], index=['x', 'y', 'z'])
+s2=pd.Series([4, 5], index=['a', 'b'])
+s3=pd.concat([s1, s2])
+# x    1
+# y    2
+# z    3
+# a    4
+# b    5
+# dtype: int64
+s4=pd.concat([s1, s2], axis=1, sort=True)
+#  	0 	1
+# a 	NaN 	4.0
+# b 	NaN 	5.0
+# x 	1.0 	NaN
+# y 	2.0 	NaN
+# z 	3.0 	NaN
+
+df1=pd.DataFrame(np.eye(3), columns=['x' ,'y', 'z'])
+df2=pd.DataFrame(np.eye(3), columns=['a' ,'b', 'c'])
+df3=pd.concat([df1, df2], sort=True)
+# 	a 	b 	c 	x 	y 	z
+# 0 	NaN 	NaN 	NaN 	1.0 	0.0 	0.0
+# 1 	NaN 	NaN 	NaN 	0.0 	1.0 	0.0
+# 2 	NaN 	NaN 	NaN 	0.0 	0.0 	1.0
+# 0 	1.0 	0.0 	0.0 	NaN 	NaN 	NaN
+# 1 	0.0 	1.0 	0.0 	NaN 	NaN 	NaN
+# 2 	0.0 	0.0 	1.0 	NaN 	NaN 	NaN
+df4=pd.concat([df1, df2], axis=1)
+# 	x 	y 	z 	a 	b 	c
+# 0 	1.0 	0.0 	0.0 	1.0 	0.0 	0.0
+# 1 	0.0 	1.0 	0.0 	0.0 	1.0 	0.0
+# 2 	0.0 	0.0 	1.0 	0.0 	0.0 	1.0
+```
+
+example: combine
+
+```py
+import numpy as np
+import pandas as pd
+
+s1=pd.Series([1, np.nan, 3], index=['x', 'y', 'z'])
+s2=pd.Series([4, 5, 6], index=['x', 'y', 'z'])
+s3=s1.combine_first(s2)
+# x    1.0
+# y    5.0
+# z    3.0
+# dtype: float64
+
+df1=pd.DataFrame([[1, np.nan, 3],[4, np.nan, np.nan],[np.nan, 8, 9]], columns=['x' ,'y', 'z'])
+df2=pd.DataFrame(np.ones((4, 3)), columns=['x' ,'y', 'z'])
+df3=df1.combine_first(df2)
+#  	x 	y 	z
+# 0 	1.0 	1.0 	3.0
+# 1 	4.0 	1.0 	1.0
+# 2 	1.0 	8.0 	9.0
+# 3 	1.0 	1.0 	1.0
 ```
 
 ## reindex
