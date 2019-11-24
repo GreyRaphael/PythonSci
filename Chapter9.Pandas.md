@@ -4,6 +4,7 @@
   - [Series](#series)
   - [DataFrame](#dataframe)
   - [simple operation](#simple-operation)
+  - [index and columns rename](#index-and-columns-rename)
   - [reindex](#reindex)
   - [NAN](#nan)
   - [multiindex](#multiindex)
@@ -282,6 +283,49 @@ df3.min()
 # dtype: float64
 
 df3.describe()
+```
+
+## index and columns rename
+
+```py
+import numpy as np
+import pandas as pd
+
+df1=pd.DataFrame(np.arange(9).reshape(3, 3))
+#  	0 	1 	2
+# 0 	0 	1 	2
+# 1 	3 	4 	5
+# 2 	6 	7 	8
+
+# Index本质是Series的一种
+df1.index=pd.Series(['bj', 'sh', 'sz'])
+# 	0 	1 	2
+# bj 	0 	1 	2
+# sh 	3 	4 	5
+# sz 	6 	7 	8
+df1.index=df1.index.map(str.upper)
+#  	0 	1 	2
+# BJ 	0 	1 	2
+# SH 	3 	4 	5
+# SZ 	6 	7 	8
+
+df2=df1.rename(index=str.lower, columns=lambda x:f'col-{x}')
+# 	col-0 	col-1 	col-2
+# bj 	0 	1 	2
+# sh 	3 	4 	5
+# sz 	6 	7 	8
+df3=df2.rename(index={'bj':'BJ', 'sh':'SH'}, columns={'col-1':'col1'})
+#  	col-0 	col1 	col-2
+# BJ 	0 	1 	2
+# SH 	3 	4 	5
+# sz 	6 	7 	8
+```
+
+```py
+# simple example for python
+list1=[1, 2, 3, 4]
+list2=[str(i) for i in list1]
+list3=list(map(str, list1))
 ```
 
 ## reindex
