@@ -185,6 +185,37 @@ plt.axis([0, 5, -1.5, 1.5])
 plt.show()
 ```
 
+example: `subplots`
+
+```py
+import numpy as np
+import pylab as plt
+
+fig, ax=plt.subplots()
+ax.plot([1, 2, 3, 4, 5])
+plt.show()
+```
+
+```py
+import numpy as np
+import pylab as plt
+
+fig, ax=plt.subplots(2, 1)
+ax[0].plot([1, 2, 3])
+ax[1].plot([11, 22, 33])
+plt.show()
+```
+
+```py
+import numpy as np
+import pylab as plt
+
+fig, ax=plt.subplots(2, 2)
+ax[0][0].plot([1, 2, 3])
+ax[1][1].plot([11, 22, 33])
+plt.show()
+```
+
 ![](matplot_res\Figure_5.png)
 
 [QT5 coordinate system](http://doc.qt.io/qt-5/application-windows.html#window-geometry)
