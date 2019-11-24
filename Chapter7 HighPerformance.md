@@ -53,7 +53,23 @@ IPython kernel原理
 notebook原理
 > ![](Res07/notebook_components.png)
 
-Jupyter设置远程访问
+Jupyter设置远程访问:
+- method1: ssh转发
+- method2: remote jupyter server
+
+method1: ssh 转发，但是太慢
+
+```bash
+# remote machine
+jupyter notebook --no-browser --port=8889
+
+# local machine
+ssh -N -f -L localhost:8888:localhost:8889 username@your_ip_addr
+# visit local machine browser
+localhost:8888
+```
+
+method2: remote jupyter server
 
 ```bash
 C:\ProgramData\Anaconda3\Scripts\jupyter notebook --generate-config
