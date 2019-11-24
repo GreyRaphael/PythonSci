@@ -5,6 +5,7 @@
   - [DataFrame](#dataframe)
   - [reindex](#reindex)
   - [NAN](#nan)
+  - [multiindex](#multiindex)
 
 
 ## Series
@@ -329,4 +330,55 @@ df0.fillna(value={0:0, 1:11, 2:22})
 # 0 	1 	2.0 	3.0
 # 1 	5 	11.0 	6.0
 # 2 	7 	11.0 	22.0
-````
+```
+
+## multiindex
+
+```py
+import numpy as np
+import pandas as pd
+
+s0=pd.Series(np.random.randn(6), index=[['1', '1', '1', '2', '2', '2'], ['a', 'b', 'c', 'a', 'b', 'c']])
+# 1  a    2.003880
+#    b    0.102215
+#    c    0.587213
+# 2  a   -1.305691
+#    b   -0.205484
+#    c    0.964941
+# dtype: float64
+s0['1']['c']
+s0[:,'a']
+df0=s0.unstack()
+# 	a 	b 	c
+# 1 	2.003880 	0.102215 	0.587213
+# 2 	-1.305691 	-0.205484 	0.964941
+# or
+df1=pd.DataFrame([s0['1'], s0['2']])
+
+s2=df1.unstack()
+# a  0    2.003880
+#    1   -1.305691
+# b  0    0.102215
+#    1   -0.205484
+# c  0    0.587213
+#    1    0.964941
+# dtype: float64
+s3=df1.T.unstack()
+# 0  a    2.003880
+#    b    0.102215
+#    c    0.587213
+# 1  a   -1.305691
+#    b   -0.205484
+#    c    0.964941
+# dtype: float64
+
+# 多级index的DataFrame
+df2=pd.DataFrame(np.random.randn(16).reshape(4, 4), index=[['a', 'a', 'b', 'b'], [1, 2, 1, 2]], columns=[['BJ', 'BJ', 'SH', 'SZ'], [8, 9, 8, 8]])
+#  		BJ 	SH 	SZ
+# 		8 	9 	8 	8
+# a 	1 	-1.303202 	-0.884724 	0.830207 	-0.274237
+# 2 	0.772264 	-1.293091 	0.550154 	0.239424
+# b 	1 	0.635577 	-0.184073 	1.162522 	-0.264281
+# 2 	0.578760 	-0.111816 	-2.348368 	0.302795
+df2['BJ']
+```
