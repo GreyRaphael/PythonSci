@@ -9,6 +9,7 @@
   - [apply](#apply)
   - [drop duplicate](#drop-duplicate)
   - [datetime & resample](#datetime--resample)
+  - [pivot](#pivot)
   - [reindex](#reindex)
   - [NAN](#nan)
   - [multiindex](#multiindex)
@@ -557,6 +558,49 @@ weekly_df['TECENT']=stock_df['TECENT'].resample('W').mean()
 
 weekly_df.plot()
 ```
+
+## pivot
+
+透视表可以简单统计分析数据，但是需要对表结构有一定了解
+
+```bash
+# sales-funnel.csv
+Account;Name;Rep;Manager;Product;Quantity;Price;Status
+714466;Trantow-Barrows;Craig Booker;Debra Henley;CPU;1;30000;presented
+714466;Trantow-Barrows;Craig Booker;Debra Henley;Software;1;10000;presented
+714466;Trantow-Barrows;Craig Booker;Debra Henley;Maintenance;2;5000;pending
+737550;Fritsch, Russel and Anderson;Craig Booker;Debra Henley;CPU;1;35000;declined
+146832;Kiehn-Spinka;Daniel Hilton;Debra Henley;CPU;2;65000;won
+218895;Kulas Inc;Daniel Hilton;Debra Henley;CPU;2;40000;pending
+218895;Kulas Inc;Daniel Hilton;Debra Henley;Software;1;10000;presented
+412290;Jerde-Hilpert;John Smith;Debra Henley;Maintenance;2;5000;pending
+740150;Barton LLC;John Smith;Debra Henley;CPU;1;35000;declined
+141962;Herman LLC;Cedric Moss;Fred Anderson;CPU;2;65000;won
+163416;Purdy-Kunde;Cedric Moss;Fred Anderson;CPU;1;30000;presented
+239344;Stokes LLC;Cedric Moss;Fred Anderson;Maintenance;1;5000;pending
+239344;Stokes LLC;Cedric Moss;Fred Anderson;Software;1;10000;presented
+307599;Kassulke, Ondricka and Metz;Wendy Yule;Fred Anderson;Maintenance;3;7000;won
+688981;Keeling LLC;Wendy Yule;Fred Anderson;CPU;5;100000;won
+729833;Koepp Ltd;Wendy Yule;Fred Anderson;CPU;2;65000;declined
+729833;Koepp Ltd;Wendy Yule;Fred Anderson;Monitor;2;5000;presented
+```
+
+```py
+import numpy as np
+import pandas as pd
+
+df=pd.read_csv('sales-funnel.csv', sep=';')
+
+pd.pivot_table(df, index=['Name'])
+pd.pivot_table(df, index=['Name'], aggfunc='sum')
+
+pd.pivot_table(df, index=['Manager', 'Rep'])
+pd.pivot_table(df, index=['Manager', 'Rep', 'Name'])
+
+pd.pivot_table(df, index=['Manager', 'Rep'], values=['Account', 'Price'], columns=['Product'], aggfunc='sum', fill_value=0)
+```
+
+> ![](Res09/pivot_table.png)
 
 ## reindex
 
