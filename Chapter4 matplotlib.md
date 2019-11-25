@@ -12,6 +12,7 @@
   - [Figure](#figure)
   - [Axes](#axes)
   - [Axis](#axis)
+  - [Seaborn](#seaborn)
   - [Example](#example)
   - [Animation](#animation)
 
@@ -1119,6 +1120,137 @@ fig
 ```
 
 ![png](matplot_res\axis03.png)
+
+## [Seaborn](https://seaborn.pydata.org/index.html)
+
+Seaborn: powerful matplotlib extension, statistical data visualization
+> ![Python Visualizaiton landscape](matplot_res/landscape.png)
+
+example: matplotlib vs seaborn
+
+```py
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+df=pd.read_csv('iris.csv')
+g=df.groupby('Name')
+# g.describe()
+
+# plot by matplotlib
+
+# len(df.Name.unique()) # 3
+color_map=dict(zip(df.Name.unique(), ['r', 'g', 'b']))
+
+for name, df_name in g:
+    # name is str, df_name is dataframe
+    plt.scatter(df_name['PetalLength'], df_name['SepalLength'], color=color_map[name], alpha=0.3, label=name)
+plt.legend(frameon=True, title='Name')
+plt.xlabel('PetalLength')
+plt.ylabel('SepalLength')
+
+# plot by seaborn
+
+sns.lmplot('PetalLength', 'SepalLength', df, hue='Name', fit_reg=False)
+```
+
+example: seaborn style
+
+```py
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+x=np.linspace(0, 2*np.pi, 200)
+y1=np.sin(x)
+y2=np.sin(x+2)*1.25
+
+# matplotlib plot
+plt.plot(x, y1, x, y2)
+
+# seaborn plot
+# 查看sns.axes_style()具体属性，在后面添加其他参数
+# sns.set_style('darkgrid')
+sns.set_style('darkgrid', {'grid.color':'red'})
+plt.plot(x, y1, x, y2)
+sns.axes_style()
+
+# 恢复默认style
+sns.set()
+plt.plot(x, y1, x, y2)
+
+# 线粗细
+# 通过sns.plotting_context()查看具体属性，可以修改其他参数
+sns.set_context('poster', rc={'grid.linewidth':5})
+plt.plot(x, y1, x, y2)
+sns.plotting_context()
+```
+
+example: seaborn color palette
+
+```py
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+x=np.linspace(0, 2*np.pi, 200)
+y1=np.sin(x)
+y2=np.sin(x+2)*1.25
+y3=np.cos(x)*2
+y4=np.sin(2*x)
+
+# seaborn default style
+sns.set()
+plt.plot(x,y1, x, y2, x, y3, x, y4)
+
+# deep, muted, dark....
+pal1=sns.color_palette() # list of RGB tuple
+sns.palplot(pal1)
+pal2=sns.color_palette('dark')
+sns.palplot(pal2)
+# 如果所需要的颜色超过给出的10种，要么自己指定RGB list的数值;要么自定义
+pal3=sns.color_palette('hls', 12)
+sns.palplot(pal3)
+
+# global set_palette
+# sns.set_palette(pal2)
+# plt.plot(x,y1, x, y2, x, y3, x, y4)
+
+# local set_palette
+with pal3:
+    plt.plot(x,y1, x, y2, x, y3, x, y4)
+
+# 下面绘制的仍然是默认style
+plt.plot(x,y1, x, y2, x, y3, x, y4)
+```
+
+example: seaborn graphs
+> ![](matplot_res/heatmap01.png)
+
+```py
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+s1=pd.Series(np.random.randn(1000))
+
+# distribution plot
+sns.distplot(s1, bins=15, hist=True, kde=True, rug=True)
+
+sns.kdeplot(s1, shade=True, color='r')
+
+# get data from online
+df=sns.load_dataset('flights')
+df2=df.pivot_table(index='month', columns=['year'], values='passengers')
+sns.heatmap(df2, annot=True, fmt='d')
+
+s2=df2.sum() # 按年份求和
+sns.barplot(x=s2.index, y=s2.values)
+```
 
 ## Example
 
