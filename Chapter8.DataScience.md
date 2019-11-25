@@ -54,3 +54,29 @@ alibaba['dailyReturn'].plot(figsize=(10, 4), marker='o')
 alibaba['dailyReturn'].plot(kind='hist')
 ```
 
+example: stock
+> ![](Res08/jointplot01.png)  
+> ![](Res08/pairplot.png)
+
+```py
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+import pandas_datareader as pdr
+import seaborn as sns
+
+start_date='20180920'
+company=['AAPL', 'GOOG', 'MSFT', 'AMZN', 'FB']
+df=pdr.get_data_yahoo(company, start=start_date)['Close']
+pct_df=df.pct_change()
+
+df[['AAPL', 'MSFT', 'FB']].plot()
+
+# 两组涨跌的想关性
+sns.jointplot('GOOG', 'FB', pct_df, kind='scatter')
+
+sns.pairplot(pct_df)
+
+# 95%把握AAPL的dailyReturn最大取值为-0.03，每天的最大亏损是0.03%
+pct_df['AAPL'].quantile(0.05)
+```
