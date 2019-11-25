@@ -16,6 +16,7 @@
   - [map](#map)
   - [replace](#replace)
   - [bins & groupby & aggregate](#bins--groupby--aggregate)
+  - [plot](#plot)
 
 
 ## Series
@@ -888,4 +889,91 @@ g2.get_group(('BJ', 3))
 
 for (name1, name2), group in g2:
     pass
+```
+
+## plot
+
+example: Series plot
+
+```py
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+
+# Series plot
+s1=pd.Series(np.random.randn(100)).cumsum()
+s2=pd.Series(np.random.randn(100)).cumsum()
+
+s1.plot(kind='line', grid=True, label='s1', title='stock')
+s2.plot(label='s2')
+plt.legend()
+
+# Series subplots method1
+fig, ax=plt.subplots(2,1)
+ax[0].plot(s1, label='s1')
+ax[0].legend()
+ax[1].plot(s2, label='s2')
+ax[1].legend()
+
+# Series subplots method2
+fig, ax=plt.subplots(2, 1)
+s1.plot(ax=ax[0], label='s1', legend=True)
+s2.plot(ax=ax[1], label='s2', legend=True)
+```
+
+example: DataFrame plot
+
+> ![](Res09/df_plot00.png)  
+> ![](Res09/df_plot01.png)  
+> ![](Res09/df_plot02.png)  
+> ![](Res09/df_plot03.png)  
+> ![](Res09/df_plot04.png)  
+
+```py
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+
+df1=pd.DataFrame(np.random.randint(0, 100, 40).reshape(10, 4), columns=['a', 'b', 'c', 'd'])
+
+df1.plot() # line
+# equal to following
+for c in df1.columns:
+    df1[c].plot()
+plt.legend()
+
+df1.T.plot()
+# equal to following
+for i in df1.index:
+    df1.iloc[i].plot(label=str(i))
+plt.legend()
+
+
+df1.plot(kind='bar')
+df1.plot(kind='bar', stacked=True)
+df1.plot(kind='area', stacked=True)
+```
+
+example: histogram and density graph
+
+> ![](Res09/hist01.png)  
+> ![](Res09/kde01.png)  
+
+```py
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+
+s1=pd.Series(np.random.randn(100))
+
+# histogram
+# res is a tuple, len=3, 三个元素分别是频数、区间、长方形对象
+res=plt.hist(s1, rwidth=0.8)
+print(len(res)) # 3
+print(len(res[0])) # 10
+print(len(res[1])) # 11
+print(len(res[2])) # 10
+
+# Kernel Density Estimate，密度图
+s1.plot(kind='kde')
 ```
