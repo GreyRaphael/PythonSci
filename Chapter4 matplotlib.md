@@ -28,6 +28,24 @@
 
 ## Some Examples
 
+example: matplot for chinese
+
+```py
+import matplotlib.pyplot as plt
+import numpy as np
+
+plt.rcParams['font.family']=["simhei"]
+plt.rcParams['axes.unicode_minus']=False
+
+x=np.linspace(1, 10, 20)
+y=np.sin(x)
+plt.plot(x, y)
+plt.xlabel('x轴')
+plt.ylabel('y轴')
+plt.title('标题')
+plt.show()
+```
+
 ![](matplot_res\Figure_0.png)
 
 ```python
