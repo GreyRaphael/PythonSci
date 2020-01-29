@@ -20,6 +20,13 @@
 
 [matplotlib](https://matplotlib.org/gallery.html)是python最著名的绘图库，它提供了一整套和matlab相似的命令API; 还有一个`pylab`适合ipython下使用
 
+Other Graph Library:
+- [pyecharts](https://github.com/pyecharts/pyecharts)
+- [seaborn](https://github.com/mwaskom/seaborn)
+- [plotly.py](https://github.com/plotly/plotly.py): 需要注册然后api_key登陆
+- [vispy](https://github.com/vispy/vispy)
+- [moviepy](https://github.com/Zulko/moviepy)
+
 ## Architecture
 
 - Backend: 将图显示在哪里
