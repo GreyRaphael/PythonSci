@@ -7,7 +7,7 @@
   - [Jupyter](#jupyter)
   - [IPython](#ipython)
     - [IPython Magic Commands](#ipython-magic-commands)
-  - [numpy数据类型系统](#numpy%e6%95%b0%e6%8d%ae%e7%b1%bb%e5%9e%8b%e7%b3%bb%e7%bb%9f)
+  - [numpy数据类型系统](#numpy数据类型系统)
   - [Cython](#cython)
     - [Install Cython on windows](#install-cython-on-windows)
     - [use cython](#use-cython)
@@ -18,6 +18,7 @@
       - [summary](#summary)
     - [numpy optimization](#numpy-optimization)
   - [`ipyparallel` module](#ipyparallel-module)
+  - [Distributed Computing](#distributed-computing)
 
 <!-- /TOC -->
 
@@ -720,3 +721,19 @@ for i in range(100):
 
 [ipyparallel](https://github.com/ipython/ipyparallel)主要用于**并行计算**和**分布式计算**
 
+## Distributed Computing
+
+分布式计算历史:
+
+1. 高通量计算(High Thoughput Computing): 1000个任务，10台机器，每台100个任务
+    > 难点: 协调多台机器(机器有好有坏)，如何有效安排机器，单个任务本身的时间无法缩短。2000之后该概念被淡化
+2. 高性能计算(High Performance Computing): 把程序中互相不依赖的部分找多个cpu进行计算
+    > 难点: 任务不能是串行的；并行需要考虑通信；编程较难；调度相对困难；由此诞生了OpenMP, MPI, Thread, Reactor, MapReduce
+
+OpenMP vs MPI
+- OpenMP: 只能用于一台电脑上。多个进程通过共享同一个电脑的内存实现并行
+- MPI: 能用于多台电脑上。多个进程通过分布式共享内存实现并行
+  - 框架抽象层次低，需要侵入业务代码
+  - 用于2000年附近
+- Thread(多线程编程): 只能用于同一台机器. e.g. Spark基于线程的分布式计算框架
+- MapReduce: 数据在内存里装不下，差不多了往硬盘写，2015年以前的主流计算框架，符合大数据处理思路
